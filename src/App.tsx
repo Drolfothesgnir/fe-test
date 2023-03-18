@@ -8,6 +8,7 @@ type Product = {
   price: number;
   description: string;
   imageUrl: string;
+  color: string;
 }
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
     instance.get('/api/shop/products').then(res => {
       setProducts(res.data)
     }).catch(console.log)
+    console.log('in');
+    
   }, [])
 
   return (
@@ -27,6 +30,7 @@ function App() {
             <h3>{item.name}</h3>
             <h4>$ {item.price}</h4>
             <p>{item.description}</p>
+            <span>{item.color}</span>
           </li>
         })}
       </ul>
