@@ -1,41 +1,64 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import instance from './utils/http'
+import queryString from "query-string";
+import { useState, useEffect, ChangeEvent } from "react";
+import "./App.css";
+import searchFilter from "./utils/filters/searchFilter";
+import instance from "./utils/http";
 
-type Product = {
+type CategorySet = { [key: string]: boolean };
+interface Product {
   id: number;
   name: string;
   price: number;
   description: string;
   imageUrl: string;
   color: string;
+  categories: CategorySet;
+  brand: string;
+  availability: boolean;
+  rating: number;
 }
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filterConfig, setFilterConfig] = useState<Record<string, any>>({});
+
+  function getProducts() {
+    instance
+      .get(`/api/shop/products?${queryString.stringify(filterConfig)}`)
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch(console.log);
+  }
+
   useEffect(() => {
-    instance.get('/api/shop/products').then(res => {
-      setProducts(res.data)
-    }).catch(console.log)
-    console.log('in');
-    
-  }, [])
+    getProducts();
+  }, [filterConfig]);
+
+  function searchHandler(e: ChangeEvent) {
+    setFilterConfig((config) =>
+      searchFilter((e.target as HTMLInputElement).value, config)
+    );
+  }
 
   return (
     <div className="App">
+      <input type="search" onChange={searchHandler} />
       <ul>
-        {products.map(item => {
-          return <li key={item.id}>
-            <img src={item.imageUrl} alt={item.name} />
-            <h3>{item.name}</h3>
-            <h4>$ {item.price}</h4>
-            <p>{item.description}</p>
-            <span>{item.color}</span>
-          </li>
+        {products.map((item) => {
+          return (
+            <li key={item.id}>
+              <img src={item.imageUrl} alt={item.name} />
+              <h3>{item.name}</h3>
+              <h4>$ {item.price}</h4>
+              <p>{item.description}</p>
+              <span>{item.color}</span>
+            </li>
+          );
         })}
       </ul>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
