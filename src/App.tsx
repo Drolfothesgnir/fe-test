@@ -1,6 +1,8 @@
 import queryString from "query-string";
 import { useState, useEffect, ChangeEvent } from "react";
 import "./App.css";
+import { Order } from "./utils/const";
+import useSort from "./utils/filterApi/sort";
 import searchFilter from "./utils/filters/searchFilter";
 import instance from "./utils/http";
 
@@ -21,6 +23,12 @@ interface Product {
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filterConfig, setFilterConfig] = useState<Record<string, any>>({});
+  const sortApi = useSort()
+
+  useEffect(() => {
+    console.log(sortApi.toString());
+    
+  }, [sortApi.items])
 
   function getProducts() {
     instance
@@ -44,6 +52,8 @@ function App() {
   return (
     <div className="App">
       <input type="search" onChange={searchHandler} />
+      <button onClick={() => sortApi.set('price', Order.DESC)}>Sort Price</button>
+      <button onClick={() => sortApi.set('rating', Order.ASC)}>Sort Rating</button>
       <ul>
         {products.map((item) => {
           return (
