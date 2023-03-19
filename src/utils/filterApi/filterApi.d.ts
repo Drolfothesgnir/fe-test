@@ -10,3 +10,5 @@ export interface ParamManager<T, K extends unknown[]> {
 export type MatchParams = { [key: string]: string[] };
 
 export type SortParams = { [key: string]: Order };
+
+export type PaginationParams = {page: number, perPage: number}
