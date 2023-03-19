@@ -25,16 +25,15 @@ interface Product {
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filterConfig, setFilterConfig] = useState<Record<string, any>>({});
-  const sortApi = useSort()
-  const searchApi = useSearch()
+  const sortApi = useSort();
+  const searchApi = useSearch();
   const matchApi = useMatch()
 
-  // useEffect(() => {
-  //   console.log(sortApi.toString());
-  //   console.log(searchApi.toString());
-  //   console.log(matchApi.toString());
-    
-  // }, [sortApi.items, searchApi.searchValue, matchApi.items])
+  useEffect(() => {
+    console.log(sortApi.toString());
+    console.log(searchApi.toString());
+    console.log(matchApi.toString());
+  }, [sortApi.items, searchApi.searchValue, matchApi.items]);
 
   function getProducts() {
     instance
@@ -50,15 +49,19 @@ function App() {
   }, []);
 
   function searchHandler(e: ChangeEvent) {
-    // searchApi.set((e.target as HTMLInputElement).value)
+    searchApi.set((e.target as HTMLInputElement).value)
   }
 
   return (
     <div className="App">
       <input type="search" onChange={searchHandler} />
-      {/* <button onClick={() => sortApi.set('price', Order.DESC)}>Sort Price</button>
-      <button onClick={() => sortApi.set('rating', Order.ASC)}>Sort Rating</button> */}
-      <button onClick={() => matchApi.set('color', new Date().getSeconds().toString())}>match test</button>
+      <button onClick={() => sortApi.set("price", Order.DESC)}>
+        Sort Price
+      </button>
+      <button onClick={() => sortApi.set("rating", Order.ASC)}>
+        Sort Rating
+      </button>
+      <button onClick={() => matchApi.set('zaloopa', new Date().getSeconds().toString())}>match test</button>
       <ul>
         {products.map((item) => {
           return (

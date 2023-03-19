@@ -3,18 +3,18 @@ import deleteObjectProperty from "../deleteObjectProperty";
 
 export default function useMatch() {
   const [items, setItems] = useState<{ [key: string]: string[] }>({});
-console.log({items});
 
   const set = useCallback(
     function (name: string, value: string) {
-      console.log({name, value});
-      
       setItems((state) => {
         const result = { ...state };
         if (!result[name]) {
-          result[name] = [];
+          result[name] = [value];
+        } else {
+          const copy = result[name].slice();
+          copy.push(value);
+          result[name] = copy;
         }
-        result[name].push(value);
         return result;
       });
     },
