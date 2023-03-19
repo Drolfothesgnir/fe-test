@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
-import deleteObjectProperty from "../deleteObjectProperty";
+import { MatchParams, ParamManager } from "./filterApi";
 
-export default function useMatch() {
-  const [items, setItems] = useState<{ [key: string]: string[] }>({});
+export default function useMatch(init: MatchParams = {}): ParamManager<MatchParams, [name:string, value:string]> {
+  const [items, setItems] = useState<MatchParams>(init);
 
   const set = useCallback(
     function (name: string, value: string) {
@@ -21,6 +21,10 @@ export default function useMatch() {
     [items]
   );
 
+  const reset = useCallback(function (value: MatchParams) {
+    setItems(value)
+  }, [items])
+
   const unset = useCallback(
     function (name: string, value: string) {
       setItems((state) => {
@@ -28,7 +32,11 @@ export default function useMatch() {
 
         const filtered = state[name].filter((item) => item !== value);
 
-        if (!filtered.length) return deleteObjectProperty(state, name);
+        if (!filtered.length) {
+          const copy = { ...state };
+          delete copy[name];
+          return copy;
+        }
 
         return { ...state, [name]: filtered };
       });
@@ -36,28 +44,12 @@ export default function useMatch() {
     [items]
   );
 
-  const toString = useCallback(
+  const toObject = useCallback(
     function () {
-      const entries = Object.entries(items);
-      if (!entries.length) return "";
-      const entry = entries[0];
-      let result = concatValues(entry);
-      for (let i = 1; i < entries.length; i++) {
-        result += `&${concatValues(entries[i])}`;
-      }
-      return result;
+      return items as Readonly<MatchParams>;
     },
     [items]
   );
 
-  return { items, set, unset, toString };
-}
-
-function concatValues([name, values]: [string, string[]]) {
-  const value = values[0];
-  let result = `${name}=${value}`;
-  for (let i = 1; i < values.length; i++) {
-    result += `&${name}=${values[i]}`;
-  }
-  return result;
+  return { value: items, set, unset, toObject, reset };
 }

@@ -1,12 +1,12 @@
-import queryString from "query-string";
 import { useState, useEffect, ChangeEvent } from "react";
 import "./App.css";
 import { Order } from "./utils/const";
-import useMatch from "./utils/filterApi/match";
-import useSearch from "./utils/filterApi/search";
-import useSort from "./utils/filterApi/sort";
-import searchFilter from "./utils/filters/searchFilter";
+import useFilterApi from "./utils/filterApi/useFilterApi";
+
+
 import instance from "./utils/http";
+
+// TODO asObject() method for filtersApi; Operators api for filtersApi; remove toString() method from *Api
 
 type CategorySet = { [key: string]: boolean };
 interface Product {
@@ -24,20 +24,18 @@ interface Product {
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filterConfig, setFilterConfig] = useState<Record<string, any>>({});
-  const sortApi = useSort();
-  const searchApi = useSearch();
-  const matchApi = useMatch()
+  
+  const filterApi = useFilterApi()
 
-  useEffect(() => {
-    console.log(sortApi.toString());
-    console.log(searchApi.toString());
-    console.log(matchApi.toString());
-  }, [sortApi.items, searchApi.searchValue, matchApi.items]);
+  useEffect(function () {
+    
+    console.log(filterApi.getQueryString());
+    
+  }, [filterApi.value])
 
   function getProducts() {
     instance
-      .get(`/api/shop/products?${queryString.stringify(filterConfig)}`)
+      .get(`/api/shop/products?${filterApi.getQueryString()}`)
       .then((res) => {
         setProducts(res.data);
       })
@@ -45,23 +43,23 @@ function App() {
   }
 
   useEffect(() => {
-    // getProducts();
-  }, []);
+    getProducts();
+  }, [filterApi.value]);
 
   function searchHandler(e: ChangeEvent) {
-    searchApi.set((e.target as HTMLInputElement).value)
+    filterApi.search.set((e.target as HTMLInputElement).value)
   }
 
   return (
     <div className="App">
       <input type="search" onChange={searchHandler} />
-      <button onClick={() => sortApi.set("price", Order.DESC)}>
+      <button onClick={() => filterApi.sort.set("price", Order.DESC)}>
         Sort Price
       </button>
-      <button onClick={() => sortApi.set("rating", Order.ASC)}>
+      <button onClick={() => filterApi.sort.set("rating", Order.ASC)}>
         Sort Rating
       </button>
-      <button onClick={() => matchApi.set('zaloopa', new Date().getSeconds().toString())}>match test</button>
+      <button onClick={() => filterApi.match.set('zaloopa', new Date().getSeconds().toString())}>match test</button>
       <ul>
         {products.map((item) => {
           return (

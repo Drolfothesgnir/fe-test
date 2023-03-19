@@ -1,17 +1,26 @@
 import { useState, useCallback } from "react";
+import { ParamManager } from "./filterApi";
 
-export default function useSearch() {
-  const [searchValue, set] = useState('');
+export default function useSearch(
+  init: string = ""
+): ParamManager<string, [value: string]> {
+  const [searchValue, set] = useState(init);
 
-  const unset = useCallback(function () {
-    set('')
-  }, [searchValue])
+  const unset = useCallback(
+    function () {
+      set("");
+    },
+    [searchValue]
+  );
 
-  const toString = useCallback(function () {
-    if (searchValue === '') return '';
+  const toObject = useCallback(
+    function () {
+      if (searchValue === "") return {};
 
-    return `q=${searchValue}`
-  }, [searchValue])
+      return { q: searchValue };
+    },
+    [searchValue]
+  );
 
-  return {searchValue, set, unset, toString}
+  return { value: searchValue, set, unset, reset: unset, toObject };
 }
