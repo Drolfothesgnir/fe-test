@@ -1,3 +1,4 @@
+import queryString from "query-string";
 import { useState, useEffect, ChangeEvent } from "react";
 import "./App.css";
 import { Order } from "./utils/const";
@@ -23,6 +24,8 @@ interface Product {
 }
 
 function App() {
+  console.log(queryString.stringify({name: new RegExp('/\\d+')}));
+  
   const [products, setProducts] = useState<Product[]>([]);
   
   const filterApi = useFilterApi({pagination: {perPage: 10, page: 1}})

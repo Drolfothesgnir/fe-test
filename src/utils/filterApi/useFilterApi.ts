@@ -1,8 +1,14 @@
 import queryString from "query-string";
 import { useCallback, useMemo } from "react";
-import { MatchParams, PaginationParams, SortParams } from "./filterApi";
+import {
+  MatchParams,
+  PaginationParams,
+  RangeParams,
+  SortParams,
+} from "./filterApi";
 import useMatch from "./match";
 import usePagination from "./pagination";
+import useRange from "./range";
 import useSearch from "./search";
 import useSort from "./sort";
 
@@ -11,6 +17,7 @@ type FilterParams = {
   match: MatchParams;
   search: string;
   pagination: PaginationParams;
+  range: RangeParams;
 };
 
 export default function useFilterApi(init: Partial<FilterParams> = {}) {
@@ -18,6 +25,7 @@ export default function useFilterApi(init: Partial<FilterParams> = {}) {
   const match = useMatch(init.match);
   const search = useSearch(init.search);
   const pagination = usePagination(init.pagination);
+  const range = useRange(init.range);
 
   const value = useMemo(
     () => ({
@@ -25,13 +33,14 @@ export default function useFilterApi(init: Partial<FilterParams> = {}) {
       match: match.value,
       search: search.value,
       pagination: pagination.value,
+      range: range.value,
     }),
-    [sort.value, match.value, search.value, pagination.value]
+    [sort.value, match.value, search.value, pagination.value, range.value]
   );
 
   const getQueryString = useCallback(
     function () {
-      return [sort, match, search, pagination]
+      return [sort, match, search, pagination, range]
         .map((item) =>
           queryString.stringify(item.toObject(), {
             arrayFormat: item._arrayFormat,
@@ -43,5 +52,5 @@ export default function useFilterApi(init: Partial<FilterParams> = {}) {
     [value]
   );
 
-  return { value, sort, match, search, pagination, getQueryString };
+  return { value, sort, match, search, pagination, range, getQueryString };
 }
