@@ -25,7 +25,7 @@ interface Product {
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
   
-  const filterApi = useFilterApi()
+  const filterApi = useFilterApi({pagination: {perPage: 10, page: 1}})
 
   useEffect(function () {
     
@@ -52,6 +52,7 @@ function App() {
 
   return (
     <div className="App">
+      <button disabled={(filterApi.value.pagination.page) < 2} onClick={filterApi.pagination.prev}>Prev page</button>
       <input type="search" onChange={searchHandler} />
       <button onClick={() => filterApi.sort.set("price", Order.DESC)}>
         Sort Price
@@ -59,7 +60,8 @@ function App() {
       <button onClick={() => filterApi.sort.set("rating", Order.ASC)}>
         Sort Rating
       </button>
-      <button onClick={() => filterApi.match.set('zaloopa', new Date().getSeconds().toString())}>match test</button>
+      <button onClick={() => filterApi.pagination.unset("perPage", 0)}>match test</button>
+      <button onClick={filterApi.pagination.next}>Next page</button>
       <ul>
         {products.map((item) => {
           return (
