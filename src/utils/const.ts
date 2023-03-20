@@ -1,11 +1,9 @@
 export enum Order {
   ASC = 'asc',
-  DESC = 'desc',
-  NO = 'no'
+  DESC = 'desc'
 }
 
-export enum Operator {
+export enum Range {
   GTE = '_gte',
   LTE = '_lte',
-  LIKE = '_like'
 }
