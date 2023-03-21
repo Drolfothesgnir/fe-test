@@ -2,7 +2,7 @@ import Rating from "@mui/material/Rating";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 
-interface Props {
+type Props = {
   product: Shop.Product;
 }
 

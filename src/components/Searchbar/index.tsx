@@ -6,7 +6,7 @@ import Button from '@mui/material/Button'
 import type { FormEventHandler } from "react";
 import { useState } from "react";
 
-interface Props {
+type Props = {
   initialValue?: string;
   onSearch: (arg: string) => void;
 }
