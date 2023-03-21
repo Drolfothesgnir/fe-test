@@ -9,7 +9,7 @@ export default function Gallery({ items }: Props) {
   return (
     <Grid container spacing={2}>
       {items.map((item) => (
-        <Grid item xs={3} key={item.id}>
+        <Grid item md={3} key={item.id}>
           <ProductCard product={item} />
         </Grid>
       ))}

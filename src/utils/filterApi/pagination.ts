@@ -44,5 +44,12 @@ export default function usePagination(init:FilterState['pagination'] = defaultSt
     })
   }, [state])
 
-  return {state, prevPage, nextPage, setPage, setPerPage}
+  const toObject = useCallback(function () {
+    return {
+      _page: state.page,
+      _limit: state.perPage,
+    }
+  }, [state])
+
+  return {state, prevPage, nextPage, setPage, setPerPage, toObject}
 }
