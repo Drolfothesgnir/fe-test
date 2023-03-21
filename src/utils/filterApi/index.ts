@@ -100,6 +100,30 @@ export default function useFilterApi(
     [matchState]
   );
 
+  const setRange = useCallback(
+    function (name: string, value: [number, number]) {
+      range((oldState) => {
+        const newState = { ...oldState };
+        newState[name] = value;
+        return newState;
+      });
+    },
+    [rangeState]
+  );
+
+  const unsetRange = useCallback(
+    function (name: string) {
+      range((oldState) => {
+        if (!oldState[name]) return oldState;
+
+        const newState = { ...oldState };
+        delete newState[name];
+        return newState;
+      });
+    },
+    [rangeState]
+  );
+
   const state = useMemo(
     function () {
       return {
@@ -143,5 +167,7 @@ export default function useFilterApi(
     getQueryString,
     setMatch,
     unsetMatch,
+    setRange,
+    unsetRange,
   };
 }

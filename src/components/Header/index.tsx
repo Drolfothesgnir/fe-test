@@ -19,7 +19,7 @@ export default function Header({ filterApi }: Props) {
           disableGutters
           sx={{ justifyContent: { xs: "flex-start" }, py: 1.5 }}
         >
-          <Box sx={{ width: "15%", display: { xs: "block", sm: "none" } }}>
+          <Box sx={{ width: "15%", display: { xs: "block", md: "none" } }}>
             <IconButton
               size="large"
               edge="start"
@@ -29,7 +29,7 @@ export default function Header({ filterApi }: Props) {
               <MenuIcon />
             </IconButton>
           </Box>
-          <Box sx={{ width: "10%", display: { xs: "none", sm: "block" } }}>
+          <Box sx={{ width: "10%", display: { xs: "none", md: "block" } }}>
             <Typography
               variant="h6"
               component="div"

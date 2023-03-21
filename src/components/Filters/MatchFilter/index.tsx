@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useState, useMemo, useCallback } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -9,17 +10,19 @@ import debounce from "@mui/material/utils/debounce";
 type Props = {
   param: string;
   items: string[];
-  selectedItems: string[];
+  selectedItems?: string[];
   set: Shop.FilterAPI["setMatch"];
   unset: Shop.FilterAPI["unsetMatch"];
+  label?: (name: string) => ReactNode;
 };
 
 export default function MatchFilter({
   param,
   items,
-  selectedItems,
+  selectedItems = [],
   set,
   unset,
+  label,
 }: Props) {
   const [search, setSearch] = useState("");
 
@@ -46,11 +49,15 @@ export default function MatchFilter({
   return (
     <>
       <SearchField onChange={setSearch} />
-      <Box sx={{ maxHeight: 400, overflow: "auto" }}>
+      <Box sx={{ maxHeight: 400, overflowY: "auto", pl: '13px' }}>
         {filtered.map((name) => {
           return (
             <FormControlLabel
-              sx={{ display: "flex", fontSize: "14px" }}
+              sx={{
+                display: "flex",
+                fontSize: "14px",
+                "& > .MuiFormControlLabel-label": { width: "100%" },
+              }}
               key={name}
               control={
                 <Checkbox
@@ -60,9 +67,13 @@ export default function MatchFilter({
                 />
               }
               label={
-                <Typography component="span" sx={{ fontSize: "14px" }}>
-                  {name}
-                </Typography>
+                label ? (
+                  label(name)
+                ) : (
+                  <Typography component="span" sx={{ fontSize: "14px" }}>
+                    {name}
+                  </Typography>
+                )
               }
             />
           );

@@ -1,13 +1,14 @@
-declare namespace Shop {
-  enum Order {
-    ASC = "asc",
-    DESC = "desc",
-  }
+enum Order {
+  ASC = "asc",
+  DESC = "desc",
+}
 
-  enum Range {
-    GTE = "_gte",
-    LTE = "_lte",
-  }
+enum Range {
+  GTE = "_gte",
+  LTE = "_lte",
+}
+
+declare namespace Shop {
 
   interface Product {
     id: number;
@@ -34,7 +35,6 @@ declare namespace Shop {
   interface FilterAPI {
     state: FilterState;
 
-    // Pagination
     nextPage(): void;
     prevPage(): void;
     setPage(page: number): void;
@@ -42,7 +42,6 @@ declare namespace Shop {
 
     sort(arg: FilterAction<FilterState["sort"]>): void;
 
-    // Match
     match(arg: FilterAction<FilterState["match"]>): void;
     setMatch(name: string, value: string): void;
     unsetMatch(name: string, value: string): void;
@@ -50,9 +49,9 @@ declare namespace Shop {
     search(arg: FilterAction<FilterState["search"]>): void;
 
     range(arg: FilterAction<FilterState["range"]>): void;
+    setRange(name: string, value: [number, number]): void;
+    unsetRange(name: string): void;
 
     getQueryString(): string;
-
-    
   }
 }
