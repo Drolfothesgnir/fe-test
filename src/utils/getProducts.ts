@@ -7,3 +7,13 @@ export default async function getProducts(query: string = '') {
     total: headers['x-total-count'] || data.length
   }
 }
+
+export async function getBrands() {
+  const { data } = await http.get<string[]>('/api/shop/brands');
+  return data
+}
+
+export async function getColors() {
+  const { data } = await http.get<string[]>('/api/shop/colors');
+  return data
+}

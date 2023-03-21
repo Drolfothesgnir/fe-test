@@ -1,10 +1,8 @@
 import queryString from "query-string";
 import { useCallback, useState, useMemo } from "react";
-import { Order } from "../const";
-import { FilterAPI, FilterState } from "./filterApi";
 import usePagination from "./pagination";
 
-const defaultState: FilterState = {
+const defaultState: Shop.FilterState = {
   match: {},
   range: {},
   pagination: { perPage: 10, page: 1 },
@@ -12,11 +10,11 @@ const defaultState: FilterState = {
   sort: {},
 };
 
-function matchToObject(match: FilterState["match"]) {
+function matchToObject(match: Shop.FilterState["match"]) {
   return match;
 }
 
-function rangeToObject(range: FilterState["range"]) {
+function rangeToObject(range: Shop.FilterState["range"]) {
   const entries = Object.entries(range);
   if (!entries.length) return {};
   const result: Record<string, number> = {};
@@ -32,12 +30,12 @@ function rangeToObject(range: FilterState["range"]) {
   return result;
 }
 
-function searchToObject(search: FilterState["search"]) {
+function searchToObject(search: Shop.FilterState["search"]) {
   if (!search) return {};
   return { q: search };
 }
 
-function sortToObject(sort: FilterState["sort"]) {
+function sortToObject(sort: Shop.FilterState["sort"]) {
   const entries = Object.entries(sort);
   if (!entries.length) return {};
   const _sort = [];
@@ -53,8 +51,8 @@ function sortToObject(sort: FilterState["sort"]) {
 }
 
 export default function useFilterApi(
-  _init: Partial<FilterState> = defaultState
-): FilterAPI {
+  _init: Partial<Shop.FilterState> = defaultState
+): Shop.FilterAPI {
   const init = { ...defaultState, ..._init };
   const {
     state: paginationState,
@@ -68,6 +66,39 @@ export default function useFilterApi(
   const [sortState, sort] = useState(init.sort);
   const [searchState, search] = useState(init.search);
   const [rangeState, range] = useState(init.range);
+
+  const setMatch = useCallback(
+    function (name: string, value: string) {
+      match((oldState) => {
+        const newState = { ...oldState };
+        if (!oldState[name]) {
+          newState[name] = [value];
+        } else {
+          const copy = newState[name].slice();
+          copy.push(value);
+          newState[name] = copy;
+        }
+        return newState;
+      });
+    },
+    [matchState]
+  );
+
+  const unsetMatch = useCallback(
+    function (name: string, value: string) {
+      match((oldState) => {
+        if (!oldState[name]) return oldState;
+        const newState = { ...oldState };
+        const filtered = oldState[name].filter((item) => item !== value);
+        newState[name] = filtered;
+        if (!filtered.length) {
+          delete newState[name];
+        }
+        return newState;
+      });
+    },
+    [matchState]
+  );
 
   const state = useMemo(
     function () {
@@ -110,5 +141,7 @@ export default function useFilterApi(
     setPerPage,
     setPage,
     getQueryString,
+    setMatch,
+    unsetMatch,
   };
 }
