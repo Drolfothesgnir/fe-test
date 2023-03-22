@@ -1,15 +1,8 @@
 enum Order {
-  ASC = "asc",
-  DESC = "desc",
+  ASC = 'asc',
+  DESC = 'desc',
 }
-
-enum Range {
-  GTE = "_gte",
-  LTE = "_lte",
-}
-
 declare namespace Shop {
-
   interface Product {
     id: number;
     name: string;
@@ -40,17 +33,17 @@ declare namespace Shop {
     setPage(page: number): void;
     setPerPage(perPage: number): void;
 
-    sort(arg: FilterAction<FilterState["sort"]>): void;
+    sort(arg: FilterAction<FilterState['sort']>): void;
     setSort(name: string, order: Order): void;
     unsetSort(name: string): void;
 
-    match(arg: FilterAction<FilterState["match"]>): void;
+    match(arg: FilterAction<FilterState['match']>): void;
     setMatch(name: string, value: string): void;
     unsetMatch(name: string, value: string): void;
 
-    search(arg: FilterAction<FilterState["search"]>): void;
+    search(arg: FilterAction<FilterState['search']>): void;
 
-    range(arg: FilterAction<FilterState["range"]>): void;
+    range(arg: FilterAction<FilterState['range']>): void;
     setRange(name: string, value: [number, number]): void;
     unsetRange(name: string): void;
 

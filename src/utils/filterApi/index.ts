@@ -1,23 +1,18 @@
-import {
-  useCallback,
-  useState,
-  useMemo,
-  useEffect,
-} from "react";
-import { Order } from "../const";
-import usePagination from "./pagination";
+import { useCallback, useState, useMemo, useEffect } from 'react';
+import { Order } from '../const';
+import usePagination from './pagination';
 
 const defaultState: Shop.FilterState = {
   match: {},
   range: {},
   pagination: { perPage: 10, page: 1 },
-  search: "",
+  search: '',
   sort: { rating: Order.DESC },
 };
 
 export default function useFilterApi(
   _init: Partial<Shop.FilterState> = defaultState,
-  resetPageOnFilterChange = true
+  resetPageOnFilterChange = true,
 ): Shop.FilterAPI {
   const init = { ...defaultState, ..._init };
   const {
@@ -60,17 +55,13 @@ export default function useFilterApi(
     });
   }, []);
 
-  const setRange = useCallback(function (
-    name: string,
-    value: [number, number]
-  ) {
+  const setRange = useCallback(function (name: string, value: [number, number]) {
     range((oldState) => {
       const newState = { ...oldState };
       newState[name] = value;
       return newState;
     });
-  },
-  []);
+  }, []);
 
   const unsetRange = useCallback(function (name: string) {
     range((oldState) => {
@@ -113,7 +104,7 @@ export default function useFilterApi(
         sort: sortState,
       };
     },
-    [paginationState, matchState, sortState, searchState, rangeState]
+    [paginationState, matchState, sortState, searchState, rangeState],
   );
 
   useEffect(() => {
