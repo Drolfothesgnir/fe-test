@@ -1,14 +1,14 @@
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
-import Button from '@mui/material/Button'
+import Button from "@mui/material/Button";
 import type { FormEventHandler } from "react";
 import { useState } from "react";
 
 type Props = {
   initialValue?: string;
   onSearch: (arg: string) => void;
-}
+};
 
 export default function CustomizedInputBase({
   initialValue = "",
@@ -16,17 +16,17 @@ export default function CustomizedInputBase({
 }: Props) {
   const [value, setValue] = useState(initialValue);
 
-  const submitHandler: FormEventHandler<HTMLFormElement>  = function (e) {
-    e.preventDefault()
-    onSearch(value)
-  }
+  const submitHandler: FormEventHandler<HTMLFormElement> = function (e) {
+    e.preventDefault();
+    onSearch(value);
+  };
 
   return (
     <Paper
       component="form"
       onSubmit={submitHandler}
       sx={{
-        overflow: 'hidden',
+        overflow: "hidden",
         display: "flex",
         alignItems: "center",
         width: "100%",

@@ -18,8 +18,8 @@ export default function PriceRange({ set, name, defaultRange }: Props) {
   const [min, max] = defaultRange;
 
   useEffect(() => {
-    setValue(defaultRange)
-  }, [defaultRange])
+    setValue(defaultRange);
+  }, [defaultRange]);
 
   const debounced = useCallback(
     debounce((value: [number, number]) => set(name, value), 500),
@@ -73,6 +73,7 @@ export default function PriceRange({ set, name, defaultRange }: Props) {
         </Button>
       </Box>
       <Slider
+        sx={{ width: "90%", display: "block", mx: "auto" }}
         onChange={handleChange}
         min={min}
         max={max}

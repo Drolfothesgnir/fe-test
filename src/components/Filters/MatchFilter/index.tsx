@@ -56,7 +56,13 @@ export default function MatchFilter({
               sx={{
                 display: "flex",
                 fontSize: "14px",
+                mr: 0,
+                pr: '16px',
                 "& > .MuiFormControlLabel-label": { width: "100%" },
+                '&:hover': {
+                  bgcolor: 'warning.main',
+                  color: 'white',
+                }
               }}
               key={name}
               control={

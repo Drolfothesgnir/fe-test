@@ -9,36 +9,47 @@ import Searchbar from "../Searchbar";
 
 type Props = {
   filterApi: Shop.FilterAPI;
-}
+  toggleDrawer(): void;
+};
 
-export default function Header({ filterApi }: Props) {
+export default function Header({ filterApi, toggleDrawer }: Props) {
   return (
     <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
-          sx={{ justifyContent: { xs: "flex-start" }, py: 1.5 }}
+          sx={{
+            justifyContent: { xs: "space-between", md: "flex-start" },
+            py: 1.5,
+          }}
         >
-          <Box sx={{ width: "15%", display: { xs: "block", md: "none" } }}>
+          <Box sx={{ display: { xs: "block", md: "none" } }}>
             <IconButton
               size="large"
               edge="start"
               color="inherit"
               aria-label="menu"
+              onClick={toggleDrawer}
             >
               <MenuIcon />
             </IconButton>
           </Box>
-          <Box sx={{ width: "10%", display: { xs: "none", md: "block" } }}>
+          <Box
+            sx={{
+              width: { xs: "10%", md: "20%" },
+              display: { xs: "none", md: "block" },
+            }}
+          >
             <Typography
               variant="h6"
               component="div"
-              sx={{ mr: 3, flexGrow: 1 }}
+              align="center"
+              sx={{ flexGrow: 1 }}
             >
               Logo
             </Typography>
           </Box>
-          <Box sx={{ width: { xs: "85%", sm: "80%" } }}>
+          <Box sx={{ width: { md: "60%" }, flexGrow: { xs: 1, md: 0 } }}>
             <Searchbar onSearch={filterApi.search} />
           </Box>
         </Toolbar>

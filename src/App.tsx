@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import Drawer from "@mui/material/Drawer";
 import Gallery from "./components/Gallery";
 import Header from "./components/Header";
 import useFilterApi from "./utils/filterApi";
@@ -18,13 +19,19 @@ import RangeFilter from "./components/Filters/RangeFilter";
 import { Order } from "./utils/const";
 
 export default function MyApp() {
-  const filterApi = useFilterApi({sort: {rating: Order.DESC}});
+  const filterApi = useFilterApi({ sort: { rating: Order.DESC } });
 
   const [products, setProducts] = useState<Shop.Product[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([1, 10]);
   const [total, setTotal] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = useCallback(
+    () => setMobileOpen((state) => !state),
+    []
+  );
 
   useEffect(() => {
     getProducts(filterApi.getQueryString()).then(
@@ -44,9 +51,40 @@ export default function MyApp() {
   const { page, perPage } = filterApi.state.pagination;
   const count = Math.ceil(total / perPage);
 
+  const filters = (
+    <>
+      <FilterWrapper name="Brand" total={brands.length} defaultExpanded>
+        <MatchFilter
+          param="brand"
+          set={filterApi.setMatch}
+          unset={filterApi.unsetMatch}
+          items={brands}
+          selectedItems={filterApi.state.match.brand}
+        />
+      </FilterWrapper>
+      <FilterWrapper name="Color" total={colors.length}>
+        <MatchFilter
+          param="color"
+          set={filterApi.setMatch}
+          unset={filterApi.unsetMatch}
+          items={colors}
+          selectedItems={filterApi.state.match.color}
+          label={colorFilterLabel}
+        />
+      </FilterWrapper>
+      <FilterWrapper name="Price" defaultExpanded>
+        <RangeFilter
+          name="price"
+          set={filterApi.setRange}
+          defaultRange={priceRange}
+        />
+      </FilterWrapper>
+    </>
+  );
+
   return (
     <div>
-      <Header filterApi={filterApi} />
+      <Header filterApi={filterApi} toggleDrawer={handleDrawerToggle} />
       <Container component="main" maxWidth="xl">
         <Grid
           container
@@ -59,38 +97,28 @@ export default function MyApp() {
             lg={2}
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            <FilterWrapper name="Brands" total={brands.length} defaultExpanded>
-              <MatchFilter
-                param="brand"
-                set={filterApi.setMatch}
-                unset={filterApi.unsetMatch}
-                items={brands}
-                selectedItems={filterApi.state.match.brand}
-              />
-            </FilterWrapper>
-            <FilterWrapper name="Colors" total={colors.length}>
-              <MatchFilter
-                param="color"
-                set={filterApi.setMatch}
-                unset={filterApi.unsetMatch}
-                items={colors}
-                selectedItems={filterApi.state.match.color}
-                label={colorFilterLabel}
-              />
-            </FilterWrapper>
-            <FilterWrapper name="Price" defaultExpanded>
-              <RangeFilter
-                name="price"
-                set={filterApi.setRange}
-                defaultRange={priceRange}
-              />
-            </FilterWrapper>
+            {filters}
           </Grid>
           <Grid item md={9} lg={8}>
             <Gallery items={products} />
           </Grid>
         </Grid>
       </Container>
+      <Drawer
+        container={window.document.body}
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: '90%' },
+        }}
+      >
+        {filters}
+      </Drawer>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Pagination
           count={count}
@@ -103,6 +131,8 @@ export default function MyApp() {
 }
 
 function colorFilterLabel(name: string) {
+  const color = name.replace(' ', '')
+
   return (
     <Box
       sx={{
@@ -125,7 +155,7 @@ function colorFilterLabel(name: string) {
           height: "15px",
           flexShrink: 0,
           borderRadius: "50%",
-          bgcolor: name.replace(" ", ""),
+          bgcolor: color,
           ml: 2,
           border: "1px solid",
         }}
