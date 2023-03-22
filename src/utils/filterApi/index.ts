@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo, useEffect } from 'react';
+import { useCallback, useState, useMemo, useEffect, useRef } from 'react';
 import { Order } from '../const';
 import usePagination from './pagination';
 
@@ -27,6 +27,7 @@ export default function useFilterApi(
   const [sortState, sort] = useState(init.sort);
   const [searchState, search] = useState(init.search);
   const [rangeState, range] = useState(init.range);
+  const firstLoadRef = useRef(true);
 
   const setMatch = useCallback(function (name: string, value: string) {
     match((oldState) => {
@@ -108,6 +109,11 @@ export default function useFilterApi(
   );
 
   useEffect(() => {
+    if (firstLoadRef.current) {
+      firstLoadRef.current = false;
+      return;
+    }
+
     if (resetPageOnFilterChange) {
       setPagination(({ perPage }) => ({ page: 1, perPage }));
     }

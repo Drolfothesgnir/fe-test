@@ -21,8 +21,6 @@ import PerPage from './components/Pagination/PerPage';
 const names = ['price', 'rating'];
 const perPageValues = [10, 15, 25];
 
-// TODO: Product skeleton, tests, load more, sort by available
-
 export default function MyApp() {
   const [products, setProducts] = useState<Shop.Product[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
@@ -30,14 +28,17 @@ export default function MyApp() {
   const [priceRange, setPriceRange] = useState<[number, number]>([1, 10]);
   const [total, setTotal] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const filterApi = useFilterApi();
 
   const handleDrawerToggle = () => setMobileOpen((state) => !state);
 
   useEffect(() => {
+    setLoading(true);
     getProducts(getQueryString(filterApi.state)).then(({ products: items, total: itemsCount }) => {
       setProducts(items);
       setTotal(itemsCount);
+      setLoading(false);
     });
   }, [filterApi.state.pagination]);
 
@@ -105,7 +106,7 @@ export default function MyApp() {
             {filters}
           </Grid>
           <Grid item md={9} lg={8}>
-            <Gallery items={products} />
+            <Gallery items={products} loading={loading} />
           </Grid>
         </Grid>
       </Container>
