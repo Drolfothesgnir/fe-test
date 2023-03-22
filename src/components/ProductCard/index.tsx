@@ -84,7 +84,7 @@ export default function ProductCard({ product }: Props) {
           </Tooltip>
         </Stack>
       </Box>
-      <Collapse in={open} sx={{ position: 'absolute', zIndex: 2 }}>
+      <Collapse in={open} sx={{ position: 'absolute', zIndex: 2, mt: '3px' }}>
         <Paper sx={{ p: 1 }}>
           <Typography gutterBottom variant='subtitle2'>
             Description:

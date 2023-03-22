@@ -20,11 +20,11 @@ export default function PerPage({ perPage, set, values, match, setMatch, unsetMa
   const checked = match.available?.includes('true') || false;
   const handleCheck = () => {
     const f = checked ? unsetMatch : setMatch;
-    f('available', 'true')
-  }
+    f('available', 'true');
+  };
 
   return (
-    <Stack direction={{xs: 'row', md: 'row-reverse'}}>
+    <Stack direction={{ xs: 'row', md: 'row-reverse' }}>
       <FormControl sx={{ m: 1, minWidth: 80, width: { xs: '50%', md: 'auto' } }}>
         <InputLabel id='per-page'>Per page</InputLabel>
         <Select
