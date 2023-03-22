@@ -1,17 +1,22 @@
 import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
+import Box from '@mui/material/Box'
 
 import getFilterRemovers from "../../../utils/filterApi/getFilterRemovers";
 
 type Props = {
   filterApi: Shop.FilterAPI;
+  exclude?: Partial<Record<keyof Shop.FilterState, Record<string, boolean>>>;
 };
 
-export default function FilterRemovers({ filterApi }: Props) {
-  const removers = getFilterRemovers(filterApi);
+export default function FilterRemovers({ filterApi, exclude }: Props) {
+  let removers = getFilterRemovers(filterApi);
+  if (exclude) {
+    removers = removers.filter(({ name, param }) => !exclude[param]?.[name]);
+  }
 
   return (
-    <Container maxWidth="xl" sx={{ minHeight: "2em", py: 3 }}>
+    <Box sx={{ minHeight: "2em", py: 3 }}>
       {removers.map(({ label, removeAction }) => (
         <Chip
           key={label}
@@ -25,13 +30,13 @@ export default function FilterRemovers({ filterApi }: Props) {
       {removers.length ? (
         <Chip
           variant="outlined"
-          label="Clear All"
+          label="Clear all"
           color="error"
           onClick={filterApi.clear}
           onDelete={filterApi.clear}
           sx={{ mr: 1, mb: 1 }}
         />
       ) : null}
-    </Container>
+    </Box>
   );
 }

@@ -5,13 +5,14 @@ type FilterRemover = {
   value: string | number | Order | [number, number];
   removeAction(): void;
   label: string;
+  param: keyof Shop.FilterState;
 };
 
 function match({
   state: { match: state },
   unsetMatch: unset,
-}: Shop.FilterAPI): FilterRemover[] {
-  const result = [];
+}: Shop.FilterAPI) {
+  const result: FilterRemover[] = [];
   for (const key in state) {
     const values = state[key];
     for (let i = 0; i < values.length; i++) {
@@ -20,6 +21,7 @@ function match({
         value: values[i],
         label: `${key}: ${values[i]}`,
         removeAction: () => unset(key, values[i]),
+        param: 'match'
       });
     }
   }
@@ -29,8 +31,8 @@ function match({
 function sort({
   state: { sort: state },
   unsetSort: unset,
-}: Shop.FilterAPI): FilterRemover[] {
-  const result = [];
+}: Shop.FilterAPI) {
+  const result: FilterRemover[] = [];
 
   for (const key in state) {
     const labelOrder = state[key] === Order.ASC ? "ascending" : "descending";
@@ -39,6 +41,7 @@ function sort({
       value: state[key],
       label: `${key} in ${labelOrder} order`,
       removeAction: () => unset(key),
+      param: 'sort'
     });
   }
   return result;
@@ -47,8 +50,8 @@ function sort({
 function range({
   state: { range: state },
   unsetRange: unset,
-}: Shop.FilterAPI): FilterRemover[] {
-  const result = [];
+}: Shop.FilterAPI) {
+  const result: FilterRemover[] = [];
   for (const key in state) {
     const [gte, lte] = state[key];
     result.push({
@@ -56,6 +59,7 @@ function range({
       value: state[key],
       label: `${key}: ${gte} - ${lte}`,
       removeAction: () => unset(key),
+      param: 'range'
     });
   }
   return result;
@@ -73,8 +77,9 @@ function search({
       value: state,
       label: `'${state}'`,
       removeAction: () => set(""),
+      param: 'search'
     },
-  ];
+  ] as FilterRemover[];
 }
 
 export default function getFilterRemovers(

@@ -18,16 +18,19 @@ import MatchFilter from "./components/Filters/MatchFilter";
 import RangeFilter from "./components/Filters/RangeFilter";
 import FilterRemovers from "./components/Filters/FilterRemovers";
 import { getQueryString } from "./utils/filterApi/getFilterQueryString";
+import SortFilter from "./components/Filters/SortFilter";
+
+const names = ['price', 'rating']
 
 export default function MyApp() {
-  const filterApi = useFilterApi();
-
+  
   const [products, setProducts] = useState<Shop.Product[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [colors, setColors] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([1, 10]);
   const [total, setTotal] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const filterApi = useFilterApi();
 
   const handleDrawerToggle = () => setMobileOpen((state) => !state);
 
@@ -38,7 +41,7 @@ export default function MyApp() {
         setTotal(itemsCount);
       }
     );
-  }, [filterApi.state]);
+  }, [filterApi.state.pagination]);
 
   useEffect(() => {
     getBrands().then(setBrands);
@@ -81,17 +84,17 @@ export default function MyApp() {
     </>
   );
 
-  const filterRemovers = (
-    <FilterRemovers filterApi={filterApi} />
-  )
-
   return (
     <div>
       <Header filterApi={filterApi} toggleDrawer={handleDrawerToggle} />
+        <Container component="main" maxWidth="xl">
       <Box>
-        {filterRemovers}
+        <FilterRemovers
+          filterApi={filterApi}
+          exclude={{ sort: { rating: true, price: true } }}
+        />
       </Box>
-      <Container component="main" maxWidth="xl">
+      <SortFilter names={names} set={filterApi.sort} state={filterApi.state.sort} />
         <Grid
           container
           columns={{ xs: 12, sm: 12, md: 12, lg: 10, xl: 10 }}

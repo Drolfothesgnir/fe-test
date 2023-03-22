@@ -1,4 +1,9 @@
-import { useCallback, useState, useMemo } from "react";
+import {
+  useCallback,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
 import { Order } from "../const";
 import usePagination from "./pagination";
 
@@ -7,11 +12,12 @@ const defaultState: Shop.FilterState = {
   range: {},
   pagination: { perPage: 10, page: 1 },
   search: "",
-  sort: {},
+  sort: { rating: Order.DESC },
 };
 
 export default function useFilterApi(
-  _init: Partial<Shop.FilterState> = defaultState
+  _init: Partial<Shop.FilterState> = defaultState,
+  resetPageOnFilterChange = true
 ): Shop.FilterAPI {
   const init = { ...defaultState, ..._init };
   const {
@@ -95,7 +101,7 @@ export default function useFilterApi(
     sort(defaultState.sort);
     setPagination(defaultState.pagination);
     range(defaultState.range);
-  }, [])
+  }, []);
 
   const state = useMemo(
     function () {
@@ -109,6 +115,12 @@ export default function useFilterApi(
     },
     [paginationState, matchState, sortState, searchState, rangeState]
   );
+
+  useEffect(() => {
+    if (resetPageOnFilterChange) {
+      setPagination(({ perPage }) => ({ page: 1, perPage }));
+    }
+  }, [matchState, sortState, searchState, rangeState]);
 
   return {
     state,
@@ -126,6 +138,6 @@ export default function useFilterApi(
     unsetRange,
     setSort,
     unsetSort,
-    clear
+    clear,
   };
 }
