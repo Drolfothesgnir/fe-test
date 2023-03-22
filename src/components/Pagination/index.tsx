@@ -1,4 +1,4 @@
-import MUIPagination from "@mui/material/Pagination";
+import MUIPagination from '@mui/material/Pagination';
 
 type Props = {
   count: number;
@@ -13,7 +13,7 @@ export default function Pagination({ count, page, filterApi }: Props) {
     <MUIPagination
       count={count}
       page={page}
-      color="primary"
+      color='primary'
       onChange={(_, _page) => filterApi.setPage(_page)}
     />
   );

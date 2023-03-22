@@ -1,11 +1,11 @@
-import Typography from "@mui/material/Typography";
-import AppBar from "@mui/material/AppBar";
-import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Searchbar from "./Searchbar";
+import Typography from '@mui/material/Typography';
+import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Searchbar from './Searchbar';
 
 type Props = {
   filterApi: Shop.FilterAPI;
@@ -14,21 +14,21 @@ type Props = {
 
 export default function Header({ filterApi, toggleDrawer }: Props) {
   return (
-    <AppBar position="sticky">
-      <Container maxWidth="xl">
+    <AppBar position='sticky'>
+      <Container maxWidth='xl'>
         <Toolbar
           disableGutters
           sx={{
-            justifyContent: { xs: "space-between", md: "flex-start" },
+            justifyContent: { xs: 'space-between', md: 'flex-start' },
             py: 1.5,
           }}
         >
-          <Box sx={{ display: { xs: "block", md: "none" } }}>
+          <Box sx={{ display: { xs: 'block', md: 'none' } }}>
             <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
+              size='large'
+              edge='start'
+              color='inherit'
+              aria-label='menu'
               onClick={toggleDrawer}
             >
               <MenuIcon />
@@ -36,21 +36,16 @@ export default function Header({ filterApi, toggleDrawer }: Props) {
           </Box>
           <Box
             sx={{
-              width: { xs: "10%", md: "20%" },
-              display: { xs: "none", md: "block" },
+              width: { xs: '10%', md: '20%' },
+              display: { xs: 'none', md: 'block' },
             }}
           >
-            <Typography
-              variant="h6"
-              component="div"
-              align="center"
-              sx={{ flexGrow: 1 }}
-            >
+            <Typography variant='h6' component='div' align='center' sx={{ flexGrow: 1 }}>
               Logo
             </Typography>
           </Box>
-          <Box sx={{ width: { md: "60%" }, flexGrow: { xs: 1, md: 0 } }}>
-            <Searchbar currentValue={filterApi.state.search} onSearch={filterApi.search}  />
+          <Box sx={{ width: { md: '60%' }, flexGrow: { xs: 1, md: 0 } }}>
+            <Searchbar currentValue={filterApi.state.search} onSearch={filterApi.search} />
           </Box>
         </Toolbar>
       </Container>
