@@ -1,4 +1,5 @@
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import ProductCard from "../ProductCard";
 
 type Props = {
@@ -6,6 +7,13 @@ type Props = {
 };
 
 export default function Gallery({ items }: Props) {
+  if (!items.length) {
+    return (
+      <Typography variant="h2" align="center" sx={{ fontWeight: "400" }}>
+        Nothing Found!
+      </Typography>
+    );
+  }
   return (
     <Grid
       container

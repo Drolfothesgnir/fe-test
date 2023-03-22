@@ -28,7 +28,7 @@ export default function SortFilter({ names, set, state }: Props) {
   };
 
   return (
-    <Stack direction="row" justifyContent="flex-end" sx={{mb: 2}}>
+    <Stack direction="row" justifyContent="flex-end" sx={{mb: 0}}>
       <FormControl sx={{ m: 1, minWidth: 120, width: {xs: '50%', md: 'auto'} }}>
         <InputLabel id="sort-by">Sort by</InputLabel>
         <Select
