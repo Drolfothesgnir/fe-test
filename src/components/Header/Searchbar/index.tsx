@@ -3,18 +3,24 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import type { FormEventHandler } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 type Props = {
   initialValue?: string;
   onSearch: (arg: string) => void;
+  currentValue: Shop.FilterState['search'];
 };
 
 export default function CustomizedInputBase({
   initialValue = "",
   onSearch,
+  currentValue,
 }: Props) {
   const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(currentValue)
+  }, [currentValue])
 
   const submitHandler: FormEventHandler<HTMLFormElement> = function (e) {
     e.preventDefault();

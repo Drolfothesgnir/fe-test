@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import Searchbar from "../Searchbar";
+import Searchbar from "./Searchbar";
 
 type Props = {
   filterApi: Shop.FilterAPI;
@@ -50,7 +50,7 @@ export default function Header({ filterApi, toggleDrawer }: Props) {
             </Typography>
           </Box>
           <Box sx={{ width: { md: "60%" }, flexGrow: { xs: 1, md: 0 } }}>
-            <Searchbar onSearch={filterApi.search} />
+            <Searchbar currentValue={filterApi.state.search} onSearch={filterApi.search}  />
           </Box>
         </Toolbar>
       </Container>

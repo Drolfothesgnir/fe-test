@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "@mui/material/Container";
 import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
@@ -16,10 +16,11 @@ import getProducts, {
 import FilterWrapper from "./components/Filters/FilterWrapper";
 import MatchFilter from "./components/Filters/MatchFilter";
 import RangeFilter from "./components/Filters/RangeFilter";
-import { Order } from "./utils/const";
+import FilterRemovers from "./components/Filters/FilterRemovers";
+import { getQueryString } from "./utils/filterApi/getFilterQueryString";
 
 export default function MyApp() {
-  const filterApi = useFilterApi({ sort: { rating: Order.DESC } });
+  const filterApi = useFilterApi();
 
   const [products, setProducts] = useState<Shop.Product[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
@@ -28,13 +29,10 @@ export default function MyApp() {
   const [total, setTotal] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const handleDrawerToggle = useCallback(
-    () => setMobileOpen((state) => !state),
-    []
-  );
+  const handleDrawerToggle = () => setMobileOpen((state) => !state);
 
   useEffect(() => {
-    getProducts(filterApi.getQueryString()).then(
+    getProducts(getQueryString(filterApi.state)).then(
       ({ products: items, total: itemsCount }) => {
         setProducts(items);
         setTotal(itemsCount);
@@ -77,14 +75,22 @@ export default function MyApp() {
           name="price"
           set={filterApi.setRange}
           defaultRange={priceRange}
+          currentRange={filterApi.state.range.price}
         />
       </FilterWrapper>
     </>
   );
 
+  const filterRemovers = (
+    <FilterRemovers filterApi={filterApi} />
+  )
+
   return (
     <div>
       <Header filterApi={filterApi} toggleDrawer={handleDrawerToggle} />
+      <Box>
+        {filterRemovers}
+      </Box>
       <Container component="main" maxWidth="xl">
         <Grid
           container
@@ -114,7 +120,7 @@ export default function MyApp() {
         }}
         sx={{
           display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: '90%' },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: "90%" },
         }}
       >
         {filters}
@@ -131,7 +137,7 @@ export default function MyApp() {
 }
 
 function colorFilterLabel(name: string) {
-  const color = name.replace(' ', '')
+  const color = name.replace(" ", "");
 
   return (
     <Box

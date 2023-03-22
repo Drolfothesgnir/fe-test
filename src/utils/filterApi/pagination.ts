@@ -1,9 +1,8 @@
 import { useState, useCallback } from 'react'
-import { FilterState } from "./filterApi";
 
 const defaultState = {page: 1, perPage: 10}
 
-export default function usePagination(init:FilterState['pagination'] = defaultState) {
+export default function usePagination(init:Shop.FilterState['pagination'] = defaultState) {
   const [state, setState] = useState(init)
 
   const nextPage = useCallback(function () {
@@ -44,12 +43,5 @@ export default function usePagination(init:FilterState['pagination'] = defaultSt
     })
   }, [state])
 
-  const toObject = useCallback(function () {
-    return {
-      _page: state.page,
-      _limit: state.perPage,
-    }
-  }, [state])
-
-  return {state, prevPage, nextPage, setPage, setPerPage, toObject}
+  return {state, prevPage, nextPage, setPage, setPerPage, setPagination:setState}
 }

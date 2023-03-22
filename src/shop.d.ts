@@ -41,6 +41,8 @@ declare namespace Shop {
     setPerPage(perPage: number): void;
 
     sort(arg: FilterAction<FilterState["sort"]>): void;
+    setSort(name: string, order: Order): void;
+    unsetSort(name: string): void;
 
     match(arg: FilterAction<FilterState["match"]>): void;
     setMatch(name: string, value: string): void;
@@ -52,6 +54,6 @@ declare namespace Shop {
     setRange(name: string, value: [number, number]): void;
     unsetRange(name: string): void;
 
-    getQueryString(): string;
+    clear(): void;
   }
 }

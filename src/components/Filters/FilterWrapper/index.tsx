@@ -33,7 +33,7 @@ export default function FilterWrapper({
         aria-controls="panel1bh-content"
         id="panel1bh-header"
       >
-        <Typography color="primary.main" sx={{ width: "33%", flexShrink: 0 }}>
+        <Typography color="primary.main" sx={{ flexShrink: 0 }}>
           {name}
         </Typography>
         {total ? (

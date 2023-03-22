@@ -11,15 +11,27 @@ type Props = {
   set: Shop.FilterAPI["setRange"];
   name: string;
   defaultRange: [number, number];
+  currentRange: [number, number];
 };
 
-export default function PriceRange({ set, name, defaultRange }: Props) {
+export default function PriceRange({
+  set,
+  name,
+  defaultRange,
+  currentRange = defaultRange,
+}: Props) {
   const [value, setValue] = useState(defaultRange);
   const [min, max] = defaultRange;
 
   useEffect(() => {
     setValue(defaultRange);
   }, [defaultRange]);
+
+  useEffect(() => {
+    if (currentRange.some((n, i) => value[i] !== n)) {
+      setValue(currentRange);
+    }
+  }, [currentRange]);
 
   const debounced = useCallback(
     debounce((value: [number, number]) => set(name, value), 500),
