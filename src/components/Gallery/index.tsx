@@ -17,8 +17,6 @@ const skeletonItems = Array.from({ length: 10 }).map((_, i) => (
 ));
 
 export default function Gallery({ items, loading }: Props) {
-  console.log({ loading, items });
-
   let data;
   if (loading) {
     data = skeletonItems;

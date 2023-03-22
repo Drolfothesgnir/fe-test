@@ -21,8 +21,6 @@ import PerPage from './components/Pagination/PerPage';
 const names = ['price', 'rating'];
 const perPageValues = [10, 15, 25];
 
-// TODO: tests, load more
-
 export default function MyApp() {
   const [products, setProducts] = useState<Shop.Product[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
