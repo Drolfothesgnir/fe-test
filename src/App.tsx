@@ -21,7 +21,7 @@ import PerPage from './components/Pagination/PerPage';
 const names = ['price', 'rating'];
 const perPageValues = [10, 15, 25];
 
-// TODO: Product skeleton, tests, linter, load more, sort by available
+// TODO: Product skeleton, tests, load more, sort by available
 
 export default function MyApp() {
   const [products, setProducts] = useState<Shop.Product[]>([]);
@@ -95,6 +95,9 @@ export default function MyApp() {
             perPage={filterApi.state.pagination.perPage}
             set={filterApi.setPerPage}
             values={perPageValues}
+            match={filterApi.state.match}
+            setMatch={filterApi.setMatch}
+            unsetMatch={filterApi.unsetMatch}
           />
         </Stack>
         <Grid container columns={{ xs: 12, sm: 12, md: 12, lg: 10, xl: 10 }} spacing={2}>
