@@ -22,6 +22,8 @@ import SortFilter from "./components/Filters/SortFilter";
 
 const names = ['price', 'rating']
 
+// TODO: Product skeleton, nothing found, tests, pagination, linter, per page
+
 export default function MyApp() {
   
   const [products, setProducts] = useState<Shop.Product[]>([]);

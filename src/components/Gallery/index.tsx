@@ -9,11 +9,11 @@ export default function Gallery({ items }: Props) {
   return (
     <Grid
       container
-      columns={{ xs: 12, sm: 12, md: 12, lg: 10, xl: 10 }}
+      columns={{ xs: 12, sm: 12, md: 12, lg: 12, xl: 10 }}
       spacing={2}
     >
       {items.map((item) => (
-        <Grid item xs={12} sm={6} md={4} lg={2} key={item.id}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={item.id}>
           <ProductCard product={item} />
         </Grid>
       ))}
